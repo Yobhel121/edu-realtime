@@ -16,7 +16,7 @@ import java.util.Properties;
 public class KafkaConsumerToFile {
     public static void main(String[] args) {
         Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "hadoop101:9020");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "hadoop101:9092");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "KafkaConsumerToFile");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
