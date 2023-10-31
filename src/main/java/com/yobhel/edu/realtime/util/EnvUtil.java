@@ -31,7 +31,7 @@ public class EnvUtil {
         ));
         env.setStateBackend(new HashMapStateBackend());
         env.getCheckpointConfig().setCheckpointStorage(
-                "hdfs://hadoop:8020/edu/ck"
+                "hdfs://hadoop101:8020/edu/ck"
         );
 
         System.setProperty("HADOOP_USER_HOME", "yobhel");
