@@ -12,9 +12,9 @@ public class PhoenixJDBCExample {
         Connection connection = null;
         try {
             Class.forName("org.apache.phoenix.jdbc.PhoenixDriver");
-            connection = DriverManager.getConnection("jdbc:phoenix:<zookeeper_quorum>:<zookeeper_client_port>:<hbase_znode_parent>");
+            connection = DriverManager.getConnection("jdbc:phoenix:15.tcp.cpolar.top:11543:/hbase");
 
-            String sql = "SELECT * FROM your_table_name";
+            String sql = "SELECT * FROM web_stat limit 10";
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
 

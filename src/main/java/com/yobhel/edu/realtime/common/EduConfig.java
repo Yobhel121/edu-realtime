@@ -24,6 +24,7 @@ public class EduConfig {
     public static final String CLICKHOUSE_DRIVER = "ru.yandex.clickhouse.ClickHouseDriver";
 
     // ClickHouse 连接 URL
-    public static final String CLICKHOUSE_URL = "jdbc:clickhouse://hadoop101:8123/edu_realtime";
+//    public static final String CLICKHOUSE_URL = "jdbc:clickhouse://hadoop101:8123/edu_realtime";
+    public static final String CLICKHOUSE_URL = "jdbc:clickhouse://8xj0202144.zicp.fun:28972/edu_realtime";
 
 }
