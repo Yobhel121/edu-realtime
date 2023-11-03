@@ -2,7 +2,11 @@ package com.yobhel.edu.realtime.util;
 
 import com.yobhel.edu.realtime.common.EduConfig;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.connector.sink2.Sink;
+import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
+import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.kafka.clients.consumer.OffsetResetStrategy;
@@ -47,5 +51,14 @@ public class KafkaUtil {
     }
 
 
-
+    public static Sink<String> getKafkaProducer(String topic, String transId) {
+        return KafkaSink.<String>builder()
+                .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)
+                .setRecordSerializer(KafkaRecordSerializationSchema.<String>builder()
+                        .setTopic(topic)
+                        .setValueSerializationSchema(new SimpleStringSchema())
+                        .build()
+                )
+                .build();
+    }
 }

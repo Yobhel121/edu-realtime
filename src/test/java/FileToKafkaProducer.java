@@ -19,8 +19,8 @@ import java.util.Properties;
 public class FileToKafkaProducer {
 
     public static void main(String[] args) throws IOException {
-        sendData("/Users/yezhimin/Downloads/db_topic.txt", "topic_db");
-//        sendData("/Users/yezhimin/Downloads/log_topic", "log_topic");
+//        sendData("/Users/yezhimin/Downloads/db_topic.txt", "topic_db");
+        sendData("/Users/yezhimin/Downloads/log_topic/app.log", "topic_log");
     }
 
     public static void sendData(String filePath, String topic) throws IOException {
