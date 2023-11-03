@@ -18,22 +18,23 @@ import java.io.IOException;
 public class KafkaUtil {
 
     public static KafkaSource<String> getKafkaConsumer(String topic, String groupId) {
+
         return KafkaSource.<String>builder()
-                // 必要参数
                 .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)
                 .setTopics(topic)
                 .setGroupId(groupId)
+                .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
                 .setValueOnlyDeserializer(new DeserializationSchema<String>() {
                     @Override
-                    public String deserialize(byte[] message) throws IOException {
-                        if (message != null && message.length != 0) {
-                            return new String(message);
+                    public String deserialize(byte[] bytes) throws IOException {
+                        if (bytes != null && bytes.length != 0) {
+                            return new String(bytes);
                         }
                         return null;
                     }
 
                     @Override
-                    public boolean isEndOfStream(String nextElement) {
+                    public boolean isEndOfStream(String s) {
                         return false;
                     }
 
@@ -42,9 +43,6 @@ public class KafkaUtil {
                         return TypeInformation.of(String.class);
                     }
                 })
-                // 不必要的参数  设置offset重置的时候读取数据的位置
-                .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
-
                 .build();
     }
 

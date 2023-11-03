@@ -1,7 +1,7 @@
 <configuration>
     <property>
         <name>hbase.rootdir</name>
-        <value>hdfs://hadoop101:8020/HBase</value>
+        <value>hdfs://localhost:8020/HBase</value>
     </property>
 
     <property>
@@ -11,7 +11,7 @@
 
     <property>
         <name>hbase.zookeeper.quorum</name>
-        <value>hadoop101,hadoop102,hadoop103</value>
+        <value>localhost</value>
     </property>
 
     <property>

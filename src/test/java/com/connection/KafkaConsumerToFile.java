@@ -1,3 +1,5 @@
+package com.connection;
+
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
@@ -17,7 +19,7 @@ public class KafkaConsumerToFile {
     public static void main(String[] args) {
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "hadoop101:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "KafkaConsumerToFile");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "com.connection.KafkaConsumerToFile");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 //        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, OffsetResetStrategy.EARLIEST.toString());
