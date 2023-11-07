@@ -3,11 +3,9 @@ package com.yobhel.edu.realtime.bean;
 import lombok.Data;
 
 /**
- * 类描述：TODO
- *
- * @author yzm
- * @date 2023-10-23 16:51
- **/
+ * @author yhm
+ * @create 2023-04-24 18:04
+ */
 @Data
 public class DwdTableProcess {
 
