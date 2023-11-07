@@ -9,7 +9,6 @@ import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
-import org.apache.kafka.clients.consumer.OffsetResetStrategy;
 
 import java.io.IOException;
 
@@ -27,7 +26,10 @@ public class KafkaUtil {
                 .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)
                 .setTopics(topic)
                 .setGroupId(groupId)
-                .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
+                // 从消费组提交的位点开始消费，如果提交位点不存在，使用最早位点
+//                .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
+                // 从最早位点开始消费
+                .setStartingOffsets(OffsetsInitializer.earliest())
                 .setValueOnlyDeserializer(new DeserializationSchema<String>() {
                     @Override
                     public String deserialize(byte[] bytes) throws IOException {
