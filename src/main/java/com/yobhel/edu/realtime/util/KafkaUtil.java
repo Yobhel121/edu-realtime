@@ -9,6 +9,7 @@ import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 import java.io.IOException;
 
@@ -63,4 +64,41 @@ public class KafkaUtil {
                 )
                 .build();
     }
+
+    public static String getKafkaDDL(String topic, String groupId) {
+        return "WITH (\n" +
+                "  'connector' = 'kafka',\n" +
+                "  'topic' = '" + topic + "',\n" +
+                "  'properties.bootstrap.servers' = '" + EduConfig.KAFKA_BOOTSTRAPS + "',\n" +
+                "  'properties.group.id' = '" + groupId + "',\n" +
+                // 从最早的偏移量开始
+                "  'scan.startup.mode' = 'earliest-offset',\n" +
+                // 从特定的消费组偏移量开始
+//                "  'scan.startup.mode' = 'group-offsets',\n" +
+                "  'properties.auto.offset.reset' = 'earliest' , " +
+                "  'format' = 'json'\n" +
+                ")";
+    }
+    public static String getUpsertKafkaDDL(String topic) {
+        return "WITH (\n" +
+                "  'connector' = 'upsert-kafka',\n" +
+                "  'topic' = '" + topic + "',\n" +
+                "  'properties.bootstrap.servers' = '" + EduConfig.KAFKA_BOOTSTRAPS + "',\n" +
+                "  'key.format' = 'json'," +
+                "  'value.format' = 'json'" +
+                ")";
+    }
+
+    public static void createTopicDb(StreamTableEnvironment tableEnv, String groupId) {
+        tableEnv.executeSql("CREATE TABLE topic_db (\n" +
+                "  `database` string,\n" +
+                "  `table` string,\n" +
+                "  `type` STRING,\n" +
+                "  `data` map<string,string>,\n" +
+                "  `ts` string\n" +
+                ")" + getKafkaDDL("topic_db",groupId));
+
+    }
+
+
 }
