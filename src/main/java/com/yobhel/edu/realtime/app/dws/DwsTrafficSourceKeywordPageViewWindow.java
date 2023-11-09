@@ -12,7 +12,7 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 /**
- * 类描述：TODO
+ * 类描述：流量域来源关键词粒度页面浏览各窗口汇总表
  *
  * @author yzm
  * @date 2023-11-09 17:03

@@ -22,7 +22,7 @@ public class DimUtil {
      * @return
      */
     public static JSONObject getDimInfo(String tableName,String id){
-        return getDimInfo(tableName, Tuple2.of("ID",id));
+        return getDimInfo(tableName,Tuple2.of("ID",id));
     }
 
     /**
@@ -78,11 +78,7 @@ public class DimUtil {
         if (jedis !=null){
             jedis.close();
         }
-
-
-
         return result;
-
     }
 
     public static void deleteCached(String tableName,String id){
