@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 类描述：TODO
+ * 类描述：流量域用户跳出事务事实表
  *
  * @author yzm
  * @date 2023-11-07 15:17

@@ -26,7 +26,7 @@ import org.apache.flink.util.Collector;
 import java.time.Duration;
 
 /**
- * 类描述：TODO
+ * 类描述：用户域用户登录事务事实表
  *
  * @author yzm
  * @date 2023-11-07 17:29

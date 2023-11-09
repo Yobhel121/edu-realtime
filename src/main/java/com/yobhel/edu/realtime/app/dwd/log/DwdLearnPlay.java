@@ -25,7 +25,7 @@ import java.time.Duration;
 
 
 /**
- * 类描述：TODO
+ * 类描述：学习域播放事务事实表
  *
  * @author yzm
  * @date 2023-11-07 16:28

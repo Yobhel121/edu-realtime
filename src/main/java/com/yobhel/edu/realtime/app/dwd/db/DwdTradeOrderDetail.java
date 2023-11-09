@@ -7,7 +7,7 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 /**
- * 类描述：TODO
+ * 类描述：交易域下单事务事实表
  *
  * @author yzm
  * @date 2023-11-08 16:49

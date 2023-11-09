@@ -21,7 +21,7 @@ import org.apache.flink.util.Collector;
 import org.apache.flink.util.OutputTag;
 
 /**
- * 类描述：TODO
+ * 类描述：流量域未经加工的事务事实表
  *
  * @author yzm
  * @date 2023-11-03 14:12

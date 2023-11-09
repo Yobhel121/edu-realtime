@@ -23,7 +23,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 /**
- * 类描述：TODO
+ * 类描述：流量域独立访客事务事实表
  *
  * @author yzm
  * @date 2023-11-07 10:38
