@@ -21,13 +21,12 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 /**
- * 类描述：TODO
+ * 类描述：动态拆分维度表
  *
  * @author yzm
  * @date 2023-10-23 15:03
  **/
 public class DimSinkApp {
-
     public static void main(String[] args) throws Exception {
         // TODO 1 创建flink运行环境以及设置状态后端
         StreamExecutionEnvironment env = EnvUtil.getExecutionEnvironment(1);
@@ -70,7 +69,8 @@ public class DimSinkApp {
                 }
             }
         });
-        jsonDS.print("kafa===>");
+//        jsonDS.print();
+
 
         // TODO 4 使用flinkCDC读取配置表数据
         MySqlSource<String> mySqlSource = MySqlSource.<String>builder()
@@ -86,9 +86,10 @@ public class DimSinkApp {
                 .startupOptions(StartupOptions.initial())
                 .build();
 
-        DataStreamSource<String> configDS = env.fromSource(mySqlSource,WatermarkStrategy.noWatermarks(),"mysql_source");
-        jsonDS.print("mysql===>");
 
+        DataStreamSource<String> configDS = env.fromSource(mySqlSource,WatermarkStrategy.noWatermarks(),"mysql_source");
+
+        configDS.print();
         // TODO 5 将配置表数据创建为广播流
         // key-> 维度表名称  value-> mysql单行数据 使用javaBean
         MapStateDescriptor<String, DimTableProcess> tableProcessState = new MapStateDescriptor<>("table_process_state", String.class, DimTableProcess.class);
@@ -100,7 +101,6 @@ public class DimSinkApp {
 
         // TODO 7 对合并流进行分别处理
         SingleOutputStreamOperator<JSONObject> dimDS = connectCS.process(new DimBroadcastProcessFunction(tableProcessState));
-        dimDS.print("connect==>");
 
         // TODO 8 调取维度数据写出到phoenix
         dimDS.addSink(new DimPhoenixSinkFunc());
