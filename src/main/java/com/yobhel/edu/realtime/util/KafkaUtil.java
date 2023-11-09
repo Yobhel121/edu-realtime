@@ -3,8 +3,8 @@ package com.yobhel.edu.realtime.util;
 import com.yobhel.edu.realtime.common.EduConfig;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.connector.sink2.Sink;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -21,40 +21,72 @@ import java.io.IOException;
  **/
 public class KafkaUtil {
 
-    public static KafkaSource<String> getKafkaConsumer(String topic, String groupId) {
-
-        return KafkaSource.<String>builder()
-                .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)
-                .setTopics(topic)
-                .setGroupId(groupId)
-                // 从消费组提交的位点开始消费，如果提交位点不存在，使用最早位点
-//                .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
-                // 从最早位点开始消费
-                .setStartingOffsets(OffsetsInitializer.earliest())
-                .setValueOnlyDeserializer(new DeserializationSchema<String>() {
-                    @Override
-                    public String deserialize(byte[] bytes) throws IOException {
-                        if (bytes != null && bytes.length != 0) {
-                            return new String(bytes);
-                        }
-                        return null;
+//    public static KafkaSource<String> getKafkaConsumer(String topic, String groupId) {
+//
+//        return KafkaSource.<String>builder()
+//                .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)
+//                .setTopics(topic)
+//                .setGroupId(groupId)
+//                // 从消费组提交的位点开始消费，如果提交位点不存在，使用最早位点
+////                .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
+//                // 从最早位点开始消费
+//                .setStartingOffsets(OffsetsInitializer.earliest())
+//                .setValueOnlyDeserializer(new DeserializationSchema<String>() {
+//                    @Override
+//                    public String deserialize(byte[] bytes) throws IOException {
+//                        if (bytes != null && bytes.length != 0) {
+//                            return new String(bytes);
+//                        }
+//                        return null;
+//                    }
+//
+//                    @Override
+//                    public boolean isEndOfStream(String s) {
+//                        return false;
+//                    }
+//
+//                    @Override
+//                    public TypeInformation<String> getProducedType() {
+//                        return TypeInformation.of(String.class);
+//                    }
+//                })
+//                .build();
+//    }
+public static KafkaSource<String> getKafkaConsumer(String topic, String groupId) {
+    return KafkaSource.<String>builder()
+            // 必要参数
+            .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)
+            .setTopics(topic)
+            .setGroupId(groupId)
+            .setValueOnlyDeserializer(new DeserializationSchema<String>() {
+                @Override
+                public String deserialize(byte[] message) throws IOException {
+                    if (message != null && message.length != 0) {
+                        return new String(message);
                     }
+                    return null;
+                }
 
-                    @Override
-                    public boolean isEndOfStream(String s) {
-                        return false;
-                    }
+                @Override
+                public boolean isEndOfStream(String nextElement) {
+                    return false;
+                }
 
-                    @Override
-                    public TypeInformation<String> getProducedType() {
-                        return TypeInformation.of(String.class);
-                    }
-                })
-                .build();
-    }
+                @Override
+                public TypeInformation<String> getProducedType() {
+                    return BasicTypeInfo.STRING_TYPE_INFO;
+                }
+            })
+            // 不必要的参数  设置offset重置的时候读取数据的位置
+            // 从消费组提交的位点开始消费，如果提交位点不存在，使用最早位点
+//            .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
+            // 从最早位点开始消费
+            .setStartingOffsets(OffsetsInitializer.earliest())
+            .build();
+}
 
 
-    public static Sink<String> getKafkaProducer(String topic, String transId) {
+    public static KafkaSink<String> getKafkaProducer(String topic, String transId) {
         return KafkaSink.<String>builder()
                 .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)
                 .setRecordSerializer(KafkaRecordSerializationSchema.<String>builder()
@@ -62,6 +94,18 @@ public class KafkaUtil {
                         .setValueSerializationSchema(new SimpleStringSchema())
                         .build()
                 )
+//                .setProperty(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG,15 * 60 * 1000  + "")
+//                .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+//                .setTransactionalIdPrefix(transId)
+                .build();
+    }
+    public static <T> KafkaSink<T> getKafkaProducerBySchema(KafkaRecordSerializationSchema<T> kafkaRecordSerializationSchema, String transId) {
+        return KafkaSink.<T>builder()
+                .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)
+                .setRecordSerializer(kafkaRecordSerializationSchema)
+//                .setProperty(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG,15 * 60 * 1000  + "")
+//                .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+//                .setTransactionalIdPrefix(transId)
                 .build();
     }
 
@@ -79,6 +123,7 @@ public class KafkaUtil {
                 "  'format' = 'json'\n" +
                 ")";
     }
+
     public static String getUpsertKafkaDDL(String topic) {
         return "WITH (\n" +
                 "  'connector' = 'upsert-kafka',\n" +
@@ -96,7 +141,7 @@ public class KafkaUtil {
                 "  `type` STRING,\n" +
                 "  `data` map<string,string>,\n" +
                 "  `ts` string\n" +
-                ")" + getKafkaDDL("topic_db",groupId));
+                ")" + getKafkaDDL("topic_db", groupId));
 
     }
 
