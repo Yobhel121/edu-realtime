@@ -109,3 +109,19 @@ create table dws_trade_pay_suc_window(
 ) engine = ReplacingMergeTree(ts)
 	partition by toYYYYMMDD(stt)
 	order by(stt, edt);
+
+drop table if exists dws_trade_course_order_window;
+create table dws_trade_course_order_window(
+    stt DateTime,
+    edt DateTime,
+    course_id String,
+    course_name String,
+    subject_id String,
+    subject_name String,
+    category_id String,
+    category_name String,
+    order_total_amount Decimal(38, 20),
+    ts UInt64
+) engine = ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt, course_id, course_name);
