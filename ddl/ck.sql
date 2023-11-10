@@ -77,3 +77,13 @@ create table dws_user_register_window(
 ) engine = ReplacingMergeTree(ts)
 	partition by toYYYYMMDD(stt)
 	order by(stt, edt);
+
+drop table if exists dws_trade_cart_add_window;
+create table dws_trade_cart_add_window(
+    stt DateTime,
+    edt DateTime,
+    cart_add_uv_count UInt64,
+    ts UInt64
+) engine = ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt);
