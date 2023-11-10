@@ -56,3 +56,14 @@ create table dws_learn_chapter_play_window(
 ) engine ReplacingMergeTree(ts)
 	partition by toYYYYMMDD(stt)
 	order by(stt, edt, chapter_id, chapter_name);
+
+drop table if exists dws_user_login_window;
+create table dws_user_login_window(
+    stt DateTime,
+    edt DateTime,
+    back_count UInt64,
+    uv_count UInt64,
+    ts UInt64
+) engine = ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt);

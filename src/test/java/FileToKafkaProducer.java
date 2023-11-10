@@ -20,7 +20,7 @@ public class FileToKafkaProducer {
 
     public static void main(String[] args) throws IOException {
 //        sendData("/Users/yezhimin/Downloads/db_topic.txt", "topic_db");
-        sendData("/Users/yezhimin/Downloads/log_topic/app.log", "topic_log");
+        sendData("/Users/yezhimin/Downloads/log_topic/app.2023-10-20.log", "topic_log");
     }
 
     public static void sendData(String filePath, String topic) throws IOException {
@@ -34,7 +34,7 @@ public class FileToKafkaProducer {
             String line;
             while ((line = reader.readLine()) != null) {
                 JSONObject value = JSON.parseObject(line);
-                value.put("ts",System.currentTimeMillis()/1000);
+                value.put("ts",System.currentTimeMillis());
 //                System.out.println(value.toString());
                 ProducerRecord<String, String> record = new ProducerRecord<>(topic, value.toString());
                 producer.send(record);
