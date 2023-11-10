@@ -51,7 +51,7 @@ public class BaseDBApp {
                 }
             }
         });
-        jsonObjStream.print();
+//        jsonObjStream.print();
 
         //TODO 4 使用flinkCDC读取dwd配置表数据
         MySqlSource<String> mySqlSource = MySqlSource.<String>builder()

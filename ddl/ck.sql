@@ -87,3 +87,14 @@ create table dws_trade_cart_add_window(
 ) engine = ReplacingMergeTree(ts)
 	partition by toYYYYMMDD(stt)
 	order by(stt, edt);
+
+drop table if exists dws_trade_order_window;
+create table dws_trade_order_window(
+    stt DateTime,
+    edt DateTime,
+    order_uv_count UInt64,
+    new_order_user_count UInt64,
+    ts UInt64
+) engine = ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt);

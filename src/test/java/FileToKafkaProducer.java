@@ -20,7 +20,8 @@ public class FileToKafkaProducer {
 
     public static void main(String[] args) throws IOException {
         sendData("/Users/yezhimin/Downloads/db_topic.txt", "topic_db","db");
-        sendData("/Users/yezhimin/Downloads/log_topic/app.2023-10-20.log", "topic_log","log");
+//        sendData("/Users/yezhimin/Downloads/log_topic/app.2023-10-20.log", "topic_log","log");
+        sendData("/Users/yezhimin/Downloads/log_topic/app.log", "topic_log","log");
     }
 
     public static void sendData(String filePath, String topic,String type) throws IOException {
@@ -39,7 +40,6 @@ public class FileToKafkaProducer {
                 }else{
                     value.put("ts",System.currentTimeMillis());
                 }
-//                System.out.println(value.toString());
                 ProducerRecord<String, String> record = new ProducerRecord<>(topic, value.toString());
                 producer.send(record);
             }
