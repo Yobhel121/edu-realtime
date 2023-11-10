@@ -1,5 +1,6 @@
 package com.yobhel.edu.realtime.app.dws;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yobhel.edu.realtime.app.func.DimAsyncFunction;
 import com.yobhel.edu.realtime.bean.DwsTradeCourseOrderWindowBean;
@@ -13,6 +14,7 @@ import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.api.common.time.Time;
+import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.datastream.AsyncDataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
