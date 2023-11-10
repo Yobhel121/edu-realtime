@@ -101,7 +101,6 @@ public class DwsUserLoginWindow {
                 return element.getTs();
             }
         }));
-        withWaterMarkStream.print("mk");
 
         // TODO 6 开窗聚合
         SingleOutputStreamOperator<DwsUserLoginWindowBean> reduceStream = withWaterMarkStream.windowAll(TumblingEventTimeWindows.of(Time.seconds(10L)))
@@ -126,7 +125,6 @@ public class DwsUserLoginWindow {
                     }
                 });
 
-        reduceStream.print();
         // TODO 7 写出到clickHouse
         reduceStream.addSink(ClickHouseUtil.getJdbcSink("" +
                 "insert into dws_user_login_window values(?,?,?,?,?)"));
