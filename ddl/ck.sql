@@ -98,3 +98,14 @@ create table dws_trade_order_window(
 ) engine = ReplacingMergeTree(ts)
 	partition by toYYYYMMDD(stt)
 	order by(stt, edt);
+
+drop table if exists dws_trade_pay_suc_window;
+create table dws_trade_pay_suc_window(
+    stt DateTime,
+    edt DateTime,
+    pay_suc_uv_count UInt64,
+    pay_suc_new_user_count UInt64,
+    ts UInt64
+) engine = ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt);
