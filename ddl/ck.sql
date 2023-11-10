@@ -67,3 +67,13 @@ create table dws_user_login_window(
 ) engine = ReplacingMergeTree(ts)
 	partition by toYYYYMMDD(stt)
 	order by(stt, edt);
+
+drop table if exists dws_user_register_window;
+create table dws_user_register_window(
+    stt DateTime,
+    edt DateTime,
+    register_count UInt64,
+    ts UInt64
+) engine = ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt);

@@ -33,7 +33,7 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 类描述：TODO
+ * 类描述：播放域章节粒度视频播放各窗口汇总表
  *
  * @author yzm
  * @date 2023-11-09 20:12

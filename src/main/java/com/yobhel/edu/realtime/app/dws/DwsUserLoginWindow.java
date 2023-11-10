@@ -28,7 +28,7 @@ import org.apache.flink.util.Collector;
 import java.time.Duration;
 
 /**
- * 类描述：TODO
+ * 类描述：用户域用户登录各窗口汇总表
  *
  * @author yzm
  * @date 2023-11-10 10:50
