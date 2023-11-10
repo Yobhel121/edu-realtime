@@ -19,11 +19,11 @@ import java.util.Properties;
 public class FileToKafkaProducer {
 
     public static void main(String[] args) throws IOException {
-//        sendData("/Users/yezhimin/Downloads/db_topic.txt", "topic_db");
-        sendData("/Users/yezhimin/Downloads/log_topic/app.2023-10-20.log", "topic_log");
+        sendData("/Users/yezhimin/Downloads/db_topic.txt", "topic_db","db");
+        sendData("/Users/yezhimin/Downloads/log_topic/app.2023-10-20.log", "topic_log","log");
     }
 
-    public static void sendData(String filePath, String topic) throws IOException {
+    public static void sendData(String filePath, String topic,String type) throws IOException {
         Properties properties = new Properties();
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"); // Replace with your Kafka broker(s)
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
@@ -34,7 +34,11 @@ public class FileToKafkaProducer {
             String line;
             while ((line = reader.readLine()) != null) {
                 JSONObject value = JSON.parseObject(line);
-                value.put("ts",System.currentTimeMillis());
+                if(type.equals("db")){
+                    value.put("ts",System.currentTimeMillis()/1000);
+                }else{
+                    value.put("ts",System.currentTimeMillis());
+                }
 //                System.out.println(value.toString());
                 ProducerRecord<String, String> record = new ProducerRecord<>(topic, value.toString());
                 producer.send(record);
