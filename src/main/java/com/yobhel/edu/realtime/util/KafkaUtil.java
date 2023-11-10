@@ -21,7 +21,7 @@ import java.io.IOException;
  **/
 public class KafkaUtil {
 
-//    public static KafkaSource<String> getKafkaConsumer(String topic, String groupId) {
+    //    public static KafkaSource<String> getKafkaConsumer(String topic, String groupId) {
 //
 //        return KafkaSource.<String>builder()
 //                .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)
@@ -52,38 +52,38 @@ public class KafkaUtil {
 //                })
 //                .build();
 //    }
-public static KafkaSource<String> getKafkaConsumer(String topic, String groupId) {
-    return KafkaSource.<String>builder()
-            // 必要参数
-            .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)
-            .setTopics(topic)
-            .setGroupId(groupId)
-            .setValueOnlyDeserializer(new DeserializationSchema<String>() {
-                @Override
-                public String deserialize(byte[] message) throws IOException {
-                    if (message != null && message.length != 0) {
-                        return new String(message);
+    public static KafkaSource<String> getKafkaConsumer(String topic, String groupId) {
+        return KafkaSource.<String>builder()
+                // 必要参数
+                .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)
+                .setTopics(topic)
+                .setGroupId(groupId)
+                .setValueOnlyDeserializer(new DeserializationSchema<String>() {
+                    @Override
+                    public String deserialize(byte[] message) throws IOException {
+                        if (message != null && message.length != 0) {
+                            return new String(message);
+                        }
+                        return null;
                     }
-                    return null;
-                }
 
-                @Override
-                public boolean isEndOfStream(String nextElement) {
-                    return false;
-                }
+                    @Override
+                    public boolean isEndOfStream(String nextElement) {
+                        return false;
+                    }
 
-                @Override
-                public TypeInformation<String> getProducedType() {
-                    return BasicTypeInfo.STRING_TYPE_INFO;
-                }
-            })
-            // 不必要的参数  设置offset重置的时候读取数据的位置
-            // 从消费组提交的位点开始消费，如果提交位点不存在，使用最早位点
-//            .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
-            // 从最早位点开始消费
-            .setStartingOffsets(OffsetsInitializer.earliest())
-            .build();
-}
+                    @Override
+                    public TypeInformation<String> getProducedType() {
+                        return BasicTypeInfo.STRING_TYPE_INFO;
+                    }
+                })
+                // 不必要的参数  设置offset重置的时候读取数据的位置
+                // 从消费组提交的位点开始消费，如果提交位点不存在，使用最早位点
+                //            .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
+                // 从最早位点开始消费
+                .setStartingOffsets(OffsetsInitializer.earliest())
+                .build();
+    }
 
 
     public static KafkaSink<String> getKafkaProducer(String topic, String transId) {
@@ -99,6 +99,7 @@ public static KafkaSource<String> getKafkaConsumer(String topic, String groupId)
 //                .setTransactionalIdPrefix(transId)
                 .build();
     }
+
     public static <T> KafkaSink<T> getKafkaProducerBySchema(KafkaRecordSerializationSchema<T> kafkaRecordSerializationSchema, String transId) {
         return KafkaSink.<T>builder()
                 .setBootstrapServers(EduConfig.KAFKA_BOOTSTRAPS)

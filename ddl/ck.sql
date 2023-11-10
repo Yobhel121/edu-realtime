@@ -43,3 +43,16 @@ create table dws_traffic_page_view_window(
 	partition by toYYYYMMDD(stt)
 	order by(stt, edt);
 
+drop table if exists dws_learn_chapter_play_window;
+create table dws_learn_chapter_play_window(
+    stt DateTime,
+    edt DateTime,
+    chapter_id String,
+    chapter_name String,
+    play_count UInt64,
+    play_total_sec UInt64,
+    play_uu_count UInt64,
+    ts UInt64
+) engine ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt, chapter_id, chapter_name);
