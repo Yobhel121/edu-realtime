@@ -29,7 +29,7 @@ import org.apache.flink.util.Collector;
 import java.time.Duration;
 
 /**
- * 类描述：TODO
+ * 类描述：交易域加购各窗口汇总表
  *
  * @author yzm
  * @date 2023-11-10 14:42
