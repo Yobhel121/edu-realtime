@@ -139,3 +139,17 @@ create table dws_trade_source_order_window(
 ) engine = ReplacingMergeTree(ts)
 	partition by toYYYYMMDD(stt)
 	order by(stt, edt, source_id, source_name);
+
+drop table if exists dws_trade_province_order_window;
+create table dws_trade_province_order_window(
+    stt DateTime,
+    edt DateTime,
+    province_id String,
+    province_name String,
+    order_total_amount Decimal(38, 20),
+    order_uu_count UInt64,
+    order_count UInt64,
+    ts UInt64
+) engine = ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt, province_id, province_name);
