@@ -28,7 +28,7 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 类描述：TODO
+ * 类描述：互动域课程粒度评价各窗口汇总表
  *
  * @author yzm
  * @date 2023-11-13 10:17
