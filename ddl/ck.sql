@@ -167,3 +167,19 @@ create table dws_interaction_course_review_window(
 ) engine = ReplacingMergeTree(ts)
 	partition by toYYYYMMDD(stt)
 	order by(stt, edt, course_id, course_name);
+
+drop table if exists dws_examination_paper_exam_window;
+create table dws_examination_paper_exam_window(
+    stt DateTime,
+    edt DateTime,
+    paper_id String,
+    paper_title String,
+    course_id String,
+    course_name String,
+    exam_taken_count UInt64,
+    exam_total_score UInt64,
+    exam_total_during_sec UInt64,
+    ts UInt64
+) engine ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt, paper_id, paper_title);
