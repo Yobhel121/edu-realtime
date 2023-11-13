@@ -153,3 +153,17 @@ create table dws_trade_province_order_window(
 ) engine = ReplacingMergeTree(ts)
 	partition by toYYYYMMDD(stt)
 	order by(stt, edt, province_id, province_name);
+
+drop table if exists dws_interaction_course_review_window;
+create table dws_interaction_course_review_window(
+    stt DateTime,
+    edt DateTime,
+    course_id String,
+    course_name String,
+    review_total_stars UInt64,
+    review_user_count UInt64,
+    good_review_user_count UInt64,
+    ts UInt64
+) engine = ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt, course_id, course_name);

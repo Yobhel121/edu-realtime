@@ -34,7 +34,7 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 类描述：TODO
+ * 类描述：交易域省份粒度下单各窗口汇总表
  *
  * @author yzm
  * @date 2023-11-13 09:38
