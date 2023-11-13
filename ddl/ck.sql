@@ -183,3 +183,29 @@ create table dws_examination_paper_exam_window(
 ) engine ReplacingMergeTree(ts)
 	partition by toYYYYMMDD(stt)
 	order by(stt, edt, paper_id, paper_title);
+
+drop table if exists dws_examination_paper_score_duration_exam_window;
+create table dws_examination_paper_score_duration_exam_window(
+    stt DateTime,
+    edt DateTime,
+    paper_id String,
+    paper_title String,
+    score_duration String,
+    user_count UInt64,
+    ts UInt64
+) engine ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt, paper_id, paper_title, score_duration);
+
+drop table if exists dws_examination_question_answer_window;
+create table dws_examination_question_answer_window(
+    stt DateTime,
+    edt DateTime,
+    question_id String,
+    question_txt String,
+    correct_answer_count UInt64,
+    answer_count UInt64,
+    ts UInt64
+) engine ReplacingMergeTree(ts)
+	partition by toYYYYMMDD(stt)
+	order by(stt, edt, question_id, question_txt);
